@@ -59,4 +59,9 @@ class StatTracker
     end
     (ties / 2 / total_games_played * 100).round(2)
   end
+
+  def count_of_teams
+    total_games = CSV.read(@teams, :headers=>true)
+    total_games.count
+  end
 end
