@@ -55,4 +55,8 @@ class StatTrackerTest < MiniTest::Test
   def test_it_gets_number_of_games_played
     assert_equal 19.0, @stat_tracker.total_games_played
   end
+
+  def test_it_gets_percent_ties
+    assert_equal 5.26, @stat_tracker.percentage_ties
+  end
 end
