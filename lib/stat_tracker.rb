@@ -14,4 +14,22 @@ class StatTracker
   def self.from_csv(file_path_locations)
     self.new(file_path_locations)
   end
+
+  def highest_total_score
+    all_total_scores.max
+  end
+
+  def lowest_total_score
+    all_total_scores.min
+  end
+
+  def all_total_scores
+    scores = []
+    CSV.foreach(@games, :headers=>true, :header_converters=>:symbol) do |row|
+      scores << row[:away_goals].to_i + row[:home_goals].to_i
+    end
+    scores
+  end
+
+
 end
