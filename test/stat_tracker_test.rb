@@ -39,5 +39,9 @@ class StatTrackerTest < MiniTest::Test
     assert_equal true, @stat_tracker.all_total_scores.all? {|score| score.is_a?(Integer)}
   end
 
+  def test_it_gets_percent_home_wins
+    assert_instance_of Float, @stat_tracker.percentage_home_wins
+    assert_equal 68.42, @stat_tracker.percentage_home_wins
+  end
 
 end
