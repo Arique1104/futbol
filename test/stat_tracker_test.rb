@@ -51,4 +51,8 @@ class StatTrackerTest < MiniTest::Test
     assert_instance_of Float, @stat_tracker.percentage_visitor_wins
     assert_equal 26.32, @stat_tracker.percentage_visitor_wins
   end
+
+  def test_it_gets_number_of_games_played
+    assert_equal 19.0, @stat_tracker.total_games_played
+  end
 end
