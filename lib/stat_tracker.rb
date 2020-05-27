@@ -51,4 +51,12 @@ class StatTracker
     total_games = CSV.read(@games, :headers=>true)
     total_games.count.to_f
   end
+
+  def percentage_ties
+    ties = 0
+    CSV.foreach(@game_teams, :headers=>true, :header_converters=>:symbol) do |row|
+      ties += 1 if row[:result] == "TIE"
+    end
+    (ties / 2 / total_games_played * 100).round(2)
+  end
 end
