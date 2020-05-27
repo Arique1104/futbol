@@ -64,4 +64,10 @@ class StatTrackerTest < MiniTest::Test
     assert_instance_of Integer, @stat_tracker.count_of_teams
     assert_equal 7, @stat_tracker.count_of_teams
   end
+
+  def best_offense
+    skip
+    assert_instance_of String, @stat_tracker.best_offense
+    assert_equal "FC Dallas", @stat_tracker.best_offense
+  end
 end
