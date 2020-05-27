@@ -33,24 +33,22 @@ class StatTracker
 
   def percentage_home_wins
     home_wins = 0
-    total_home_games = 0
     CSV.foreach(@game_teams, :headers=>true, :header_converters=>:symbol) do |row|
       home_wins += 1 if row[:hoa] == "home" && row[:result] == "WIN"
-      total_home_games += 1 if row[:hoa] == "home"
     end
-    (home_wins.to_f/total_home_games * 100).round(2)
+    (home_wins/total_games_played * 100).round(2)
   end
 
   def percentage_visitor_wins
     away_wins = 0
-    total_away_games = 0
     CSV.foreach(@game_teams, :headers=>true, :header_converters=>:symbol) do |row|
       away_wins += 1 if row[:hoa] == "away" && row[:result] == "WIN"
-      total_away_games += 1 if row[:hoa] == "away"
     end
-    (away_wins.to_f/total_away_games * 100).round(2)
+    (away_wins/total_games_played * 100).round(2)
   end
 
-  # total_games_won
-  # count all of row[:result] == "WIN" returns int
+  def total_games_played
+    total_games = CSV.read(@games, :headers=>true)
+    total_games.count.to_f
+  end
 end
