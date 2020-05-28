@@ -140,4 +140,41 @@ class StatTrackerTest < MiniTest::Test
     assert_instance_of String, @stat_tracker.lowest_scoring_visitor
     assert_equal "Sporting Kansas City", @stat_tracker.lowest_scoring_visitor
   end
+
+  def test_home_team_scores
+    expected = {
+      "6"=>[3, 3, 3, 2, 1],
+      "3"=>[1, 2],
+      "5"=>[0, 1],
+      "16"=>[2, 1, 2, 2],
+      "17"=>[3, 2, 3],
+      "8"=>[2, 3],
+      "9"=>[4]
+    }
+    assert_equal expected, @stat_tracker.home_team_scores
+  end
+
+  def test_average_home_team_scores
+    expected = {
+      "6"=>2.4,
+      "3"=>1.5,
+      "5"=>0.5,
+      "16"=>1.75,
+      "17"=>2.67,
+      "8"=>2.5,
+      "9"=>4.0
+    }
+    assert_equal expected, @stat_tracker.average_home_team_scores
+  end
+
+  def test_highest_scoring_home_team
+    assert_instance_of String, @stat_tracker.highest_scoring_home_team
+    assert_equal "New York City FC", @stat_tracker.highest_scoring_home_team
+  end
+
+  def test_lowest_scoring_home_team
+    assert_instance_of String, @stat_tracker.lowest_scoring_home_team
+    assert_equal "Sporting Kansas City", @stat_tracker.lowest_scoring_home_team
+  end
+
 end
