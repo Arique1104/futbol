@@ -59,4 +59,12 @@ class StatTracker
     end
     (ties / 2 / total_games_played * 100).round(2)
   end
+
+  def games_by_season(season)
+    all_rows = CSV.read(@games, :headers=>true, :header_converters=>:symbol)
+    all_rows.select do |row|
+      row[:season] == season
+    end
+
+  end
 end
