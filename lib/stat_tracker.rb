@@ -96,5 +96,33 @@ class StatTracker
     team_name(best_offense_stats[0])
   end
 
-  def
+  def worst_offense
+    worst_offense_stats = average_team_scores.min_by do |team, av_score|
+      av_score
+    end
+    team_name(worst_offense_stats[0])
+  end
+
+  def visitor_scores
+    scores = Hash.new { |hash, key| hash[key] = [] }
+    CSV.foreach(@game_teams, :headers => true, :header_converters => :symbol) do |row|
+      scores[row[:team_id]] << row[:goals].to_i if row[:hoa] == "away"
+    end
+    scores
+  end
+
+  def average_visitor_scores
+    average_scores = Hash.new
+    visitor_scores.each do |team, scores|
+      average_scores[team] = (scores.sum.to_f / scores.count).round(2)
+    end
+    average_scores
+  end
+
+  def highest_scoring_visitor
+    highest_score = average_visitor_scores.max_by do |team, av_score|
+      av_score
+    end
+    team_name(highest_score[0])
+  end
 end
