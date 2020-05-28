@@ -104,4 +104,35 @@ class StatTrackerTest < MiniTest::Test
     assert_instance_of String, @stat_tracker.worst_offense
     assert_equal "Sporting Kansas City", @stat_tracker.worst_offense
   end
+
+  def test_visitor_scores
+    expected = {
+      "3"=>[2, 2, 1],
+      "6"=>[2, 3, 3, 4],
+      "5"=>[1, 0],
+      "17"=>[1, 2, 1, 1],
+      "16"=>[1, 0, 2],
+      "9"=>[2, 1],
+      "8"=>[1]
+    }
+    assert_equal expected, @stat_tracker.visitor_scores
+  end
+
+  def test_average_visitor_scores
+    expected = {
+      "3"=>1.67,
+      "6"=>3.00,
+      "5"=>0.50,
+      "17"=>1.25,
+      "16"=>1.00,
+      "9"=>1.50,
+      "8"=>1.00
+    }
+    assert_equal expected, @stat_tracker.average_visitor_scores
+  end
+
+  def test_highest_scoring_visitor
+    assert_instance_of String, @stat_tracker.highest_scoring_visitor
+    assert_equal "FC Dallas", @stat_tracker.highest_scoring_visitor
+  end
 end
