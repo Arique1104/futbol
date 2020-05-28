@@ -135,4 +135,9 @@ class StatTrackerTest < MiniTest::Test
     assert_instance_of String, @stat_tracker.highest_scoring_visitor
     assert_equal "FC Dallas", @stat_tracker.highest_scoring_visitor
   end
+
+  def test_lowest_scoring_visitor
+    assert_instance_of String, @stat_tracker.lowest_scoring_visitor
+    assert_equal "Sporting Kansas City", @stat_tracker.lowest_scoring_visitor
+  end
 end

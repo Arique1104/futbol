@@ -92,15 +92,15 @@ class StatTracker
   def best_offense
     best_offense_stats = average_team_scores.max_by do |team, av_score|
       av_score
-    end
-    team_name(best_offense_stats[0])
+    end[0]
+    team_name(best_offense_stats)
   end
 
   def worst_offense
     worst_offense_stats = average_team_scores.min_by do |team, av_score|
       av_score
-    end
-    team_name(worst_offense_stats[0])
+    end[0]
+    team_name(worst_offense_stats)
   end
 
   def visitor_scores
@@ -122,7 +122,14 @@ class StatTracker
   def highest_scoring_visitor
     highest_score = average_visitor_scores.max_by do |team, av_score|
       av_score
-    end
-    team_name(highest_score[0])
+    end[0]
+    team_name(highest_score)
+  end
+
+  def lowest_scoring_visitor
+    lowest_score = average_visitor_scores.min_by do |team, av_score|
+      av_score
+    end[0]
+    team_name(lowest_score)
   end
 end
