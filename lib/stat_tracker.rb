@@ -64,4 +64,37 @@ class StatTracker
     total_games = CSV.read(@teams, :headers=>true)
     total_games.count
   end
+
+  def team_name(id)
+    rows = CSV.read(@teams, :headers => true, :header_converters => :symbol)
+    rows.find do |row|
+      return row[:teamname] if row[:team_id] == id.to_s
+    end
+  end
+
+  def team_scores
+    scores = Hash.new { |hash, key| hash[key] = [] }
+    CSV.foreach(@game_teams, :headers => true, :header_converters => :symbol) do |row|
+      scores[row[:team_id]] << row[:goals].to_i
+    end
+    scores
+  end
+
+  def average_team_scores
+    #use case for a map do???
+    average_scores = Hash.new
+    team_scores.each do |team, scores|
+      average_scores[team] = (scores.sum.to_f / scores.count).round(2)
+    end
+    average_scores
+  end
+
+  def best_offense
+    best_offense_stats = average_team_scores.max_by do |team, av_score|
+      av_score
+    end
+    team_name(best_offense_stats[0])
+  end
+
+  def
 end
