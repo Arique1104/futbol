@@ -62,12 +62,42 @@ class StatTrackerTest < MiniTest::Test
 
   def test_count_of_teams
     assert_instance_of Integer, @stat_tracker.count_of_teams
-    assert_equal 7, @stat_tracker.count_of_teams
+    assert_equal 32, @stat_tracker.count_of_teams
   end
 
-  def best_offense
-    skip
+  def test_convert_team_id_to_name
+    assert_equal "FC Dallas", @stat_tracker.team_name(6)
+  end
+
+  def test_team_scores
+    expected = {
+      "3"=>[2, 2, 1, 2, 1],
+      "6"=>[3, 3, 2, 3, 3, 3, 4, 2, 1],
+      "5"=>[0, 1, 1, 0],
+      "17"=>[1, 2, 3, 2, 1, 3, 1],
+      "16"=>[2, 1, 1, 0, 2, 2, 2],
+      "9"=>[2, 1, 4],
+      "8"=>[2, 3, 1]
+    }
+    assert_equal expected, @stat_tracker.team_scores
+  end
+
+  def test_teams_average_score
+    expected = {
+      "3"=>1.60,
+      "6"=>2.67,
+      "5"=>0.50,
+      "17"=>1.86,
+      "16"=>1.43,
+      "9"=>2.33,
+      "8"=>2.00
+    }
+    assert_equal expected, @stat_tracker.average_team_scores
+  end
+
+  def test_best_offense
     assert_instance_of String, @stat_tracker.best_offense
     assert_equal "FC Dallas", @stat_tracker.best_offense
   end
+
 end
