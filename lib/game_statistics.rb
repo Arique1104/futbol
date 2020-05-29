@@ -46,4 +46,15 @@ class GameStatistics < StatTracker
     end
     (ties / 2 / total_games_played * 100).round(2)
   end
+
+  def count_of_games_by_season
+    seasons_collection = []
+    CSV.foreach(@games, :headers=>true, :header_converters=>:symbol) do |row|
+      seasons_collection << row[:season]
+    end
+    seasons_collection.each_with_object(Hash.new(0)) do |season, hash|
+      hash[season] += 1
+    end
+  end
+
 end
