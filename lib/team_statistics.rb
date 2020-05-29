@@ -27,7 +27,15 @@ class TeamStatistics < StatTracker
   end
 end
 
-
+  def season_home_team_losses(id)
+    season_losses = 0
+    CSV.foreach(@games, :headers=>true, :header_converters=>:symbol) do |row|
+      if home_or_away_team_id(id) == true &&
+        row[:home_goals].to_i < row[:away_goals].to_i
+        season_losses += 1
+      end
+    end
+  end
   # def season_home_team_calcs
   #   season_wins = 0
   #   season_losses = 0
