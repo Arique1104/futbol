@@ -61,4 +61,8 @@ class GameStatistics < StatTracker
     seasons_collection
   end
 
+  def average_goals_per_game
+    (all_total_scores.sum.to_f / all_total_scores.size).round(2)
+  end
+
 end
