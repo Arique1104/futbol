@@ -108,4 +108,24 @@ class GameStatisticsTest < MiniTest::Test
     assert_includes expected, ("20172018")
   end
 
+  def test_it_gets_average_goals_per_game
+
+    game_path = './data/games.csv'
+    team_path = './game_stats_fixtures/teams_fixtures.csv'
+    game_teams_path = './game_stats_fixtures/game_teams_fixtures.csv'
+
+    file_path_locations = {
+      games: game_path,
+      teams: team_path,
+      game_teams: game_teams_path
+    }
+
+    stat_tracker = GameStatistics.from_csv(file_path_locations)
+
+    expected = 4.22
+
+    assert_equal expected, stat_tracker.average_goals_per_game
+
+  end
+
 end
