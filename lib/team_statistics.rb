@@ -17,7 +17,7 @@ class TeamStatistics < StatTracker
   # need to pass in home id to get percent for given team
   # what is the best way to pass in that id?
   # need to make season_away_team
-
+  #rename methods to help precision of language. 
   def season_home_team_wins
     season_wins = 0
     CSV.foreach(@games, :headers=>true, :header_converters=>:symbol) do |row|
