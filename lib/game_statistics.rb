@@ -48,13 +48,17 @@ class GameStatistics < StatTracker
   end
 
   def count_of_games_by_season
+    seasons_collection.each_with_object(Hash.new(0)) do |season, hash|
+      hash[season] += 1
+    end
+  end
+
+  def seasons_collection
     seasons_collection = []
     CSV.foreach(@games, :headers=>true, :header_converters=>:symbol) do |row|
       seasons_collection << row[:season]
     end
-    seasons_collection.each_with_object(Hash.new(0)) do |season, hash|
-      hash[season] += 1
-    end
+    seasons_collection
   end
 
 end
