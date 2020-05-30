@@ -65,4 +65,21 @@ class GameStatistics < StatTracker
     (all_total_scores.sum.to_f / all_total_scores.size).round(2)
   end
 
+  def average_goals_by_season
+    seasons = seasons_collection.uniq
+    goals_by_season = seasons.each_with_object(Hash.new(0)) do |season, hash|
+      hash[season] = 0
+    end
+    CSV.foreach(@games, :headers=>true, :header_converters=>:symbol) do |row|
+      sum_goals = row[:away_goals].to_i + row[:home_goals].to_i
+      season = row[:season]
+      goals_by_season[season] += sum_goals
+    end
+    goals_by_season.map do |season, goals|
+      average = goals.to_f / (count_of_games_by_season[season])
+      goals_by_season[season] = average.round(2)
+    end
+    goals_by_season
+  end
+
 end
