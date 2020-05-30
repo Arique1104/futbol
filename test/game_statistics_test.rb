@@ -84,4 +84,28 @@ class GameStatisticsTest < MiniTest::Test
     assert_equal expected, stat_tracker.count_of_games_by_season
   end
 
+  def test_it_can_collect_the_season_ids
+    game_path = './data/games.csv'
+    team_path = './game_stats_fixtures/teams_fixtures.csv'
+    game_teams_path = './game_stats_fixtures/game_teams_fixtures.csv'
+
+    file_path_locations = {
+      games: game_path,
+      teams: team_path,
+      game_teams: game_teams_path
+    }
+
+    stat_tracker = GameStatistics.from_csv(file_path_locations)
+
+    expected = stat_tracker.seasons_collection.uniq
+
+    assert_equal 6, expected.size
+    assert_includes expected, ("20122013")
+    assert_includes expected, ("20162017")
+    assert_includes expected, ("20142015")
+    assert_includes expected, ("20152016")
+    assert_includes expected, ("20132014")
+    assert_includes expected, ("20172018")
+  end
+
 end
