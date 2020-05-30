@@ -128,4 +128,32 @@ class GameStatisticsTest < MiniTest::Test
 
   end
 
+  def test_it_gets_average_goals_by_season
+
+    game_path = './data/games.csv'
+    team_path = './game_stats_fixtures/teams_fixtures.csv'
+    game_teams_path = './game_stats_fixtures/game_teams_fixtures.csv'
+
+    file_path_locations = {
+      games: game_path,
+      teams: team_path,
+      game_teams: game_teams_path
+    }
+
+    stat_tracker = GameStatistics.from_csv(file_path_locations)
+
+    expected = {
+      "20122013"=>4.12,
+      "20162017"=>4.23,
+      "20142015"=>4.14,
+      "20152016"=>4.16,
+      "20132014"=>4.19,
+      "20172018"=>4.44
+    }
+
+    assert_equal expected, stat_tracker.average_goals_by_season
+
+  end
+
+
 end
