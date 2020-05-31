@@ -7,4 +7,10 @@ module TeamStatistics
     end
     (wins / team_games.length)
   end
+
+  def best_season(team_id)
+    team_seasons = @games.find_all do |game|
+      game.home_team_id  == team_id || game.away_team_id == team_id
+    end
+  end
 end
