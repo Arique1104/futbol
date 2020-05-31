@@ -335,7 +335,7 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_worst_season
-    
+
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'
@@ -352,7 +352,7 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_average_win_percentage
-    skip
+    
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'

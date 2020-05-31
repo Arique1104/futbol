@@ -58,4 +58,10 @@ module TeamStatistics
      win_percentage
     end[0]
   end
+
+  def all_games_by_team(team_id) # find all games that match team id
+    @game_teams.find_all do |all_games|
+      all_games.team_id == team_id
+    end
+  end
 end
