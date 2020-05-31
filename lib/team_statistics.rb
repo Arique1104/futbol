@@ -16,6 +16,12 @@ module TeamStatistics
     games_in_seasons = team_seasons.group_by do |game|
       game.season
     end
-    require "pry"; binding.pry
+
+    games_in_seasons.each do |season, season_games|
+    season_game_ids = season_games.map do |game|
+      game.game_id
+      end
+      require "pry"; binding.pry
+    end
   end
 end
