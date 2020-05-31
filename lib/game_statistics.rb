@@ -1,7 +1,4 @@
-require_relative "./stat_tracker"
-require "csv"
-
-class GameStatistics < StatTracker
+module GameStatistics
 
   # Highest sum of the winning and losing teams’ scores
   def highest_total_score # Integer
