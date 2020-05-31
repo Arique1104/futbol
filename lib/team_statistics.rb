@@ -64,4 +64,9 @@ module TeamStatistics
       all_games.team_id == team_id
     end
   end
+
+  def average_win_percentage(team_id)
+    all_games = all_games_by_team(team_id)
+    win_percentage(all_games).round(2)
+  end
 end
