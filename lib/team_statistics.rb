@@ -28,7 +28,10 @@ module TeamStatistics
         # TLDR: Checks to make sure the team id we gave matches the team ids in the given season
         game.team_id == team_id && season_game_ids.include?(game.game_id) # boolean check
       end
-      require "pry"; binding.pry
+      games_in_season[season] = win_percentage(team_games) # find the win percent of season
     end
+    games_in_season.max_by do |season, win_percentage| # find the season with the highest win percentage
+     win_percentage
+    end[0]
   end
 end
