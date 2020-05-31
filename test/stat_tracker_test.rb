@@ -318,7 +318,7 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_best_season
-    skip
+
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'
@@ -335,7 +335,7 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_worst_season
-    skip
+    
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'
@@ -544,7 +544,7 @@ class StatTrackerTest < MiniTest::Test
 
     assert_equal "Atlanta United", stat_tracker.fewest_tackles("20132014")
     assert_equal "Orlando City SC", stat_tracker.fewest_tackles("20142015")
-
+  end
 
   # League Statistics count_of_teams method
   def test_count_of_teams
@@ -565,12 +565,5 @@ class StatTrackerTest < MiniTest::Test
     assert_equal true, @stat_tracker.scores("away").all? do |team_id, scores|
       team_id.is_a?(String) && scores.is_a?(Array)
     end
-
-# Team Statistics best_season
-    skip
-  def test_it_can_find_best_season
-    assert_equal "6", @stat_tracker.best_season("20132014")
-
   end
-
 end
