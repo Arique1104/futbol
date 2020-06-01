@@ -4,20 +4,20 @@ require "minitest/pride"
 
 class StatTrackerTest < MiniTest::Test
 
+  @game_path = './data/games.csv'
+  @team_path = './data/teams.csv'
+  @game_teams_path = './data/game_teams.csv'
+
+  @locations = {
+    games: @game_path,
+    teams: @team_path,
+    game_teams: @game_teams_path
+  }
+
+  @@stat_tracker ||= StatTracker.from_csv(@locations)
+
   def test_it_exists
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
-
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
-
-    assert_instance_of StatTracker, stat_tracker
+    assert_instance_of StatTracker, @@stat_tracker
   end
 
   def test_it_gets_highest_total_score
@@ -172,140 +172,254 @@ class StatTrackerTest < MiniTest::Test
     assert_equal expected, stat_tracker.average_goals_by_season
   end
 
+  # League Statistics count_of_teams method DONE
   def test_it_gets_count_of_teams
-    skip
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
-
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
-
-    assert_equal 32, stat_tracker.count_of_teams
+    assert_equal 32, @@stat_tracker.count_of_teams
   end
 
+  # League Statistics count_of_teams method HELPER DONE
+  def test_convert_team_id_to_name
+    assert_equal "FC Dallas", @@stat_tracker.team_name("6")
+  end
+
+  # League Statistics HELPER HELPER method refactored into one
+  def test_it_can_get_scores_by_team
+    assert_equal Hash, @@stat_tracker.scores("away").class
+    assert_equal 32, @@stat_tracker.scores("away").count
+    assert_equal true, @@stat_tracker.scores("away").all? do |team_id, scores|
+      team_id.is_a?(String) && scores.is_a?(Array)
+    end
+  end
+
+  # League Statistics HELPER method
+  def test_it_can_get_all_team_scores
+    assert_equal Hash, @@stat_tracker.team_scores.class
+    assert_equal 32, @@stat_tracker.team_scores.count
+    assert_equal true, @@stat_tracker.team_scores.all? do |team_id, scores|
+      team_id.is_a?(String) && scores.is_a?(Array)
+    end
+  end
+
+  # League Statistics HELPER method
+  def test_it_can_get_visitor_scores
+    assert_equal Hash, @@stat_tracker.visitor_scores.class
+    assert_equal 32, @@stat_tracker.visitor_scores.count
+    assert_equal true, @@stat_tracker.visitor_scores.all? do |team_id, scores|
+      team_id.is_a?(String) && scores.is_a?(Array)
+    end
+  end
+
+  # League Statistics HELPER method
+  def test_it_can_get_home_team_scores
+    assert_equal Hash, @@stat_tracker.home_team_scores.class
+    assert_equal 32, @@stat_tracker.home_team_scores.count
+    assert_equal true, @@stat_tracker.home_team_scores.all? do |team_id, scores|
+      team_id.is_a?(String) && scores.is_a?(Array)
+    end
+  end
+
+    # League Statistics HELPER method
+  def test_average_scores
+    visitor_scores = @@stat_tracker.visitor_scores
+      expected = {
+        "3"=>2.15,
+        "6"=>2.25,
+        "5"=>2.18,
+        "17"=>2.04,
+        "16"=>2.10,
+        "9"=>2.01,
+        "8"=>2.01,
+        "30"=>2.01,
+        "26"=>2.03,
+        "19"=>2.04,
+        "24"=>2.14,
+        "2"=>2.10,
+        "15"=>2.20,
+        "20"=>1.93,
+        "14"=>2.12,
+        "28"=>2.13,
+        "4"=>1.97,
+        "21"=>1.91,
+        "25"=>2.12,
+        "13"=>1.95,
+        "18"=>2.05,
+        "10"=>1.95,
+        "29"=>2.12,
+        "52"=>2.04,
+        "54"=>2.10,
+        "1"=>1.90,
+        "12"=>2.02,
+        "23"=>1.94,
+        "22"=>2.03,
+        "7"=>1.88,
+        "27"=>1.85,
+        "53"=>1.85
+      }
+    assert_equal expected, @@stat_tracker.average_scores(visitor_scores)
+  end
+
+    # League Statistics HELPER method
+  def test_average_visitor_scores
+      expected = {
+        "3"=>2.15,
+        "6"=>2.25,
+        "5"=>2.18,
+        "17"=>2.04,
+        "16"=>2.10,
+        "9"=>2.01,
+        "8"=>2.01,
+        "30"=>2.01,
+        "26"=>2.03,
+        "19"=>2.04,
+        "24"=>2.14,
+        "2"=>2.10,
+        "15"=>2.20,
+        "20"=>1.93,
+        "14"=>2.12,
+        "28"=>2.13,
+        "4"=>1.97,
+        "21"=>1.91,
+        "25"=>2.12,
+        "13"=>1.95,
+        "18"=>2.05,
+        "10"=>1.95,
+        "29"=>2.12,
+        "52"=>2.04,
+        "54"=>2.10,
+        "1"=>1.90,
+        "12"=>2.02,
+        "23"=>1.94,
+        "22"=>2.03,
+        "7"=>1.88,
+        "27"=>1.85,
+        "53"=>1.85
+      }
+    assert_equal expected, @@stat_tracker.average_visitor_scores
+  end
+
+    # League Statistics HELPER method
+  def test_average_team_scores
+      expected = {
+        "3"=>2.13,
+        "6"=>2.26,
+        "5"=>2.29,
+        "17"=>2.06,
+        "16"=>2.16,
+        "9"=>2.11,
+        "8"=>2.05,
+        "30"=>2.12,
+        "26"=>2.08,
+        "19"=>2.11,
+        "24"=>2.2,
+        "2"=>2.18,
+        "15"=>2.21,
+        "20"=>2.07,
+        "14"=>2.22,
+        "28"=>2.19,
+        "4"=>2.04,
+        "21"=>2.07,
+        "25"=>2.22,
+        "13"=>2.06,
+        "18"=>2.15,
+        "10"=>2.11,
+        "29"=>2.17,
+        "52"=>2.17,
+        "54"=>2.34,
+        "1"=>1.94,
+        "23"=>1.97,
+        "12"=>2.04,
+        "27"=>2.02,
+        "7"=>1.84,
+        "22"=>2.05,
+        "53"=>1.89
+      }
+    assert_equal expected, @@stat_tracker.average_team_scores
+  end
+
+    # League Statistics HELPER method
+  def test_average_home_team_scores
+    expected = {
+      "6"=>2.28,
+      "3"=>2.1,
+      "5"=>2.39,
+      "16"=>2.23,
+      "17"=>2.08,
+      "8"=>2.08,
+      "9"=>2.2,
+      "30"=>2.22,
+      "19"=>2.17,
+      "26"=>2.14,
+      "24"=>2.25,
+      "2"=>2.28,
+      "15"=>2.22,
+      "20"=>2.2,
+      "14"=>2.32,
+      "28"=>2.24,
+      "4"=>2.11,
+      "21"=>2.22,
+      "25"=>2.33,
+      "13"=>2.16,
+      "18"=>2.24,
+      "10"=>2.26,
+      "29"=>2.21,
+      "52"=>2.3,
+      "54"=>2.59,
+      "1"=>1.97,
+      "23"=>2.01,
+      "27"=>2.2,
+      "7"=>1.79,
+      "22"=>2.06,
+      "12"=>2.07,
+      "53"=>1.93
+    }
+
+    assert_equal expected, @@stat_tracker.average_home_team_scores
+  end
+
+    # League Statistics HELPER method
+  def test_highest_score
+    average_visitor_scores = @@stat_tracker.average_visitor_scores
+    assert_equal "FC Dallas", @@stat_tracker.highest_score(average_visitor_scores)
+  end
+
+    # League Statistics method
   def test_it_gets_best_offense
-    skip
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
-
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
-
-    assert_equal "Reign FC", stat_tracker.best_offense
+    assert_equal "Reign FC", @@stat_tracker.best_offense
   end
 
+    # League Statistics method
   def test_it_gets_worst_offense
-    skip
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
-
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
-
-    assert_equal "Utah Royals FC", stat_tracker.worst_offense
+    assert_equal "Utah Royals FC", @@stat_tracker.worst_offense
   end
 
+    # League Statistics method
   def test_it_gets_highest_scoring_visitor
-    skip
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
-
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
-
-    assert_equal "FC Dallas", stat_tracker.highest_scoring_visitor
+    assert_equal "FC Dallas", @@stat_tracker.highest_scoring_visitor
   end
 
+    # League Statistics method
   def test_it_gets_highest_scoring_home_team
-    skip
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
-
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
-
-    assert_equal "Reign FC", stat_tracker.highest_scoring_home_team
+    assert_equal "Reign FC", @@stat_tracker.highest_scoring_home_team
   end
 
+    # League Statistics method
+  def test_lowest_score
+    average_visitor_scores = @@stat_tracker.average_visitor_scores
+    assert_equal "San Jose Earthquakes", @@stat_tracker.lowest_score(average_visitor_scores)
+  end
+
+    # League Statistics method
   def test_it_gets_lowest_scoring_visitor
-    skip
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
-
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
-
-    assert_equal "San Jose Earthquakes", stat_tracker.lowest_scoring_visitor
+    assert_equal "San Jose Earthquakes", @@stat_tracker.lowest_scoring_visitor
   end
 
-
+    # League Statistics method
   def test_it_gets_lowest_scoring_home_team
-    skip
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
-
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
-
-    assert_equal "Utah Royals FC", stat_tracker.lowest_scoring_home_team
+    assert_equal "Utah Royals FC", @@stat_tracker.lowest_scoring_home_team
   end
 
+    # Team Statistics HELPER method
   def test_it_gets_team_info
-    skip
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
-
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
-
     expected = {
       "team_id" => "18",
       "franchise_id" => "34",
@@ -314,7 +428,7 @@ class StatTrackerTest < MiniTest::Test
       "link" => "/api/v1/teams/18"
     }
 
-    assert_equal expected, stat_tracker.team_info("18")
+    assert_equal expected, @@stat_tracker.team_info("18")
   end
 
   def test_it_gets_best_season
@@ -402,39 +516,62 @@ class StatTrackerTest < MiniTest::Test
     assert_equal 0, stat_tracker.fewest_goals_scored("18")
   end
 
+    # Team Statistics method
   def test_it_gets_favorite_opponent
-    skip
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
-
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
-
-    assert_equal "DC United", stat_tracker.favorite_opponent("18")
+    assert_equal "DC United", @@stat_tracker.favorite_opponent("18")
   end
 
-  def test_it_gets_rival
-    skip
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
+    # Team Statistics HELPER method
+  def test_all_opponents_stats
+    assert_equal 513, @@stat_tracker.all_opponents_stats("18").count
+    all_opponent = @@stat_tracker.all_opponents_stats("18").none? do |stat|
+      stat.team_id == "18"
+    end
+    assert_equal true, all_opponent
+  end
 
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
+    # Team Statistics HELPER method
+  def test_win_percentage_against
+    expected = {
+      "19"=>0.44,
+      "52"=>0.45,
+      "21"=>0.38,
+      "20"=>0.39,
+      "17"=>0.64,
+      "29"=>0.40,
+      "25"=>0.37,
+      "16"=>0.37,
+      "30"=>0.41,
+      "1"=>0.40,
+      "8"=>0.30,
+      "23"=>0.39,
+      "3"=>0.30,
+      "14"=>0.00,
+      "15"=>0.50,
+      "28"=>0.44,
+      "22"=>0.22,
+      "24"=>0.26,
+      "5"=>0.56,
+      "2"=>0.40,
+      "26"=>0.44,
+      "7"=>0.30,
+      "27"=>0.33,
+      "6"=>0.30,
+      "13"=>0.6,
+      "10"=>0.5,
+      "9"=>0.20,
+      "12"=>0.4,
+      "54"=>0.33,
+      "4"=>0.20,
+      "53"=>0.25
     }
+    assert_equal expected, @@stat_tracker.win_percentage_against("18")
+  end
 
-    stat_tracker = StatTracker.from_csv(locations)
-
+    # Team Statistics method
+  def test_it_gets_rival
     expected = ["Houston Dash", "LA Galaxy"]
-    assert_includes expected, stat_tracker.rival("18")
+    assert_includes expected, @@stat_tracker.rival("18")
   end
 
   def test_it_gets_winningest_coach
@@ -544,33 +681,5 @@ class StatTrackerTest < MiniTest::Test
 
     assert_equal "Atlanta United", stat_tracker.fewest_tackles("20132014")
     assert_equal "Orlando City SC", stat_tracker.fewest_tackles("20142015")
-
-
-  # League Statistics count_of_teams method
-  def test_count_of_teams
-    skip
-    assert_equal 32, @stat_tracker.count_of_teams
   end
-
-  def test_convert_team_id_to_name
-    skip
-    assert_equal "FC Dallas", @stat_tracker.team_name("6")
-  end
-
-
-  def test_scores
-    skip
-    assert_equal Hash, @stat_tracker.scores("away")
-    assert_equal 32, @stat_tracker.scores("away").count
-    assert_equal true, @stat_tracker.scores("away").all? do |team_id, scores|
-      team_id.is_a?(String) && scores.is_a?(Array)
-    end
-
-# Team Statistics best_season
-    skip
-  def test_it_can_find_best_season
-    assert_equal "6", @stat_tracker.best_season("20132014")
-
-  end
-
 end
