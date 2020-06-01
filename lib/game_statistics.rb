@@ -55,4 +55,13 @@ module GameStatistics
     (all_total_scores.sum / all_total_scores.count.to_f).round(2)
   end
 
+  def average_goals_by_season
+    games_by_season = @games.group_by { |game| game.season }
+    average_goals_by_season = games_by_season.each do |season, games|
+      goals_scored = games.collect { |game| (game.away_goals + game.home_goals).to_f }
+      average_goals = (goals_scored.sum / goals_scored.count).round(2)
+      games_by_season[season] = average_goals
+    end
+  end
+
 end
