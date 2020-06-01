@@ -45,6 +45,7 @@ module GameStatistics
   end
 
   def count_of_games_by_season
+    games_by_season = @games.group_by { |game| game.season }
     games_by_season.keys.each_with_object({}) do |season, count_of_games|
       count_of_games[season] = games_by_season[season].count
     end
@@ -55,15 +56,12 @@ module GameStatistics
   end
 
   def average_goals_by_season
+    games_by_season = @games.group_by { |game| game.season }
     average_goals_by_season = games_by_season.each do |season, games|
       goals_scored = games.collect { |game| (game.away_goals + game.home_goals).to_f }
       average_goals = (goals_scored.sum / goals_scored.count).round(2)
       games_by_season[season] = average_goals
     end
   end
-
-  def games_by_season
-   @games.group_by { |game| game.season }
- end
 
 end
