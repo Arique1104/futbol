@@ -18,7 +18,6 @@ class StatTrackerTest < MiniTest::Test
 
   def test_it_exists
     assert_instance_of StatTracker, @@stat_tracker
-    require "pry"; binding.pry
   end
 
   def test_it_can_get_percentage_out_of_total_games
