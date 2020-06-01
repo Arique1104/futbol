@@ -2,6 +2,12 @@ require "csv"
 require_relative "./teams_collection"
 require_relative "./games_collection"
 require_relative "./game_teams_collection"
+# require_relative "./game_statistics"
+
+# require_relative "./league_statistics"
+# require_relative "./season_statistics"
+require_relative "./team_statistics"
+
 
 # require_relative "./game_statistics"
 # require_relative "./league_statistics"
@@ -10,10 +16,10 @@ require_relative "./season_statistics"
 
 class StatTracker
 
-  # include GameStatistics
-  # include LeagueStatistics
+  include GameStatistics
+  include LeagueStatistics
   include SeasonStatistics
-  # include TeamStatistics
+  include TeamStatistics
 
   attr_reader :games,
               :teams,
