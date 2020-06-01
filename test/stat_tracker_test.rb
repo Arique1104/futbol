@@ -432,7 +432,7 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_best_season
-    skip
+
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'
@@ -449,7 +449,7 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_worst_season
-    skip
+
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'
@@ -466,7 +466,7 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_average_win_percentage
-    skip
+
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'
@@ -483,7 +483,7 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_most_goals_scored
-    skip
+
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'
@@ -500,7 +500,7 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_fewest_goals_scored
-    skip
+
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'
@@ -570,9 +570,49 @@ class StatTrackerTest < MiniTest::Test
 
     # Team Statistics method
   def test_it_gets_rival
+
     expected = ["Houston Dash", "LA Galaxy"]
     assert_includes expected, @@stat_tracker.rival("18")
   end
+
+# Team Statistics Helper Method # FINISH THIS!
+  def test_it_can_find_win_percentage
+    skip
+    game_path = './data/games.csv'
+    team_path = './data/teams.csv'
+    game_teams_path = './data/game_teams.csv'
+
+    locations = {
+      games: game_path,
+      teams: team_path,
+      game_teams: game_teams_path
+    }
+
+    stat_tracker = StatTracker.from_csv(locations)
+
+    team_games_by_id = stat_tracker.all_games_by_team("6")
+
+    assert_equal 0.54, stat_tracker.win_percentage(team_games_by_id)
+  end
+
+# Team Statistics Helper Method # FINISH THIS!
+  def test_it_can_find_all_games_played_by_a_team
+
+    game_path = './data/games.csv'
+    team_path = './data/teams.csv'
+    game_teams_path = './data/game_teams.csv'
+
+    locations = {
+      games: game_path,
+      teams: team_path,
+      game_teams: game_teams_path
+    }
+
+    stat_tracker = StatTracker.from_csv(locations)
+
+    assert_equal 510, stat_tracker.all_games_by_team("6").count
+  end
+
 
   def test_it_gets_winningest_coach
     assert_equal "Claude Julien", @@stat_tracker.winningest_coach("20132014")
@@ -622,7 +662,6 @@ class StatTrackerTest < MiniTest::Test
 
   def test_it_gets_goals_and_shots_by_team
     expected = {16=>[237.0, 779.0], 19=>[193.0, 620.0], 30=>[184.0, 606.0], 21=>[193.0, 613.0], 26=>[232.0, 819.0], 24=>[232.0, 693.0], 25=>[199.0, 663.0], 23=>[161.0, 604.0], 4=>[185.0, 633.0], 17=>[177.0, 615.0], 29=>[188.0, 626.0], 15=>[161.0, 571.0], 20=>[164.0, 518.0], 18=>[166.0, 565.0], 6=>[220.0, 718.0], 8=>[198.0, 667.0], 5=>[209.0, 688.0], 2=>[178.0, 604.0], 52=>[175.0, 595.0], 14=>[188.0, 611.0], 13=>[154.0, 583.0], 28=>[203.0, 741.0], 7=>[136.0, 507.0], 10=>[170.0, 543.0], 27=>[172.0, 595.0], 1=>[157.0, 513.0], 9=>[171.0, 648.0], 22=>[155.0, 520.0], 3=>[222.0, 822.0], 12=>[167.0, 611.0]}
-
     assert_equal expected, @@stat_tracker.goals_and_shots_by_team("20132014")
   end
 end
