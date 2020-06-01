@@ -32,4 +32,47 @@ module SeasonStatistics
     end
   end
 
+  # given a season find the Name of the Team with the
+  # best ratio of shots to goals for the entire season
+  def most_accurate_team(season)
+    game_ids = game_ids_in_season(season)
+    x = @game_teams.reduce(Hash.new {|hash, key| hash[key] = [0,0]}) do |acc, game_team|
+      if game_ids.include?(game_team.game_id.to_i)
+        acc[game_team.team_id.to_i][0] += game_team.goals.to_f
+        acc[game_team.team_id.to_i][1] += game_team.shots.to_f
+      end
+      acc
+    end
+
+    y = x.max_by do |team_id, ratio|
+      ratio[0] / ratio[1]
+    end.first
+
+    z = @teams.each do |team|
+      if team.team_id.to_i == y
+        return team.teamname
+      end
+    end
+  end
+
+  def least_accurate_team(season)
+    game_ids = game_ids_in_season(season)
+    x = @game_teams.reduce(Hash.new {|hash, key| hash[key] = [0,0]}) do |acc, game_team|
+      if game_ids.include?(game_team.game_id.to_i)
+        acc[game_team.team_id.to_i][0] += game_team.goals.to_f
+        acc[game_team.team_id.to_i][1] += game_team.shots.to_f
+      end
+      acc
+    end
+
+    y = x.min_by do |team_id, ratio|
+      ratio[0] / ratio[1]
+    end.first
+
+    z = @teams.each do |team|
+      if team.team_id.to_i == y
+        return team.teamname
+      end
+    end
+  end
 end
