@@ -1,8 +1,8 @@
 require_relative "./stat_tracker"
 require "csv"
 
-class LeagueStatistics < StatTracker
-
+class LeagueStatistics
+  
   def count_of_teams
     total_games = CSV.read(@teams, :headers=>true)
     total_games.count

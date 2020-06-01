@@ -1,7 +1,7 @@
 require_relative "./stat_tracker"
 require "csv"
 
-class SeasonStatistics < StatTracker
+class SeasonStatistics 
 
   def games_by_season(season)
     all_rows = CSV.read(@games, :headers=>true, :header_converters=>:symbol)
@@ -9,5 +9,5 @@ class SeasonStatistics < StatTracker
       row[:season] == season
     end
   end
-  
+
 end
