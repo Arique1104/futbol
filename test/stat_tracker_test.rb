@@ -403,7 +403,7 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_favorite_opponent
-    
+
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'
@@ -436,6 +436,45 @@ class StatTrackerTest < MiniTest::Test
     expected = ["Houston Dash", "LA Galaxy"]
     assert_includes expected, stat_tracker.rival("18")
   end
+
+# Team Statistics Helper Method # FINISH THIS!
+  def test_it_can_find_win_percentage
+    skip
+    game_path = './data/games.csv'
+    team_path = './data/teams.csv'
+    game_teams_path = './data/game_teams.csv'
+
+    locations = {
+      games: game_path,
+      teams: team_path,
+      game_teams: game_teams_path
+    }
+
+    stat_tracker = StatTracker.from_csv(locations)
+
+    team_games_by_id = stat_tracker.all_games_by_team("6")
+
+    assert_equal 0.54, stat_tracker.win_percentage(team_games_by_id)
+  end
+
+# Team Statistics Helper Method # FINISH THIS!
+  def test_it_can_find_all_games_played_by_a_team
+
+    game_path = './data/games.csv'
+    team_path = './data/teams.csv'
+    game_teams_path = './data/game_teams.csv'
+
+    locations = {
+      games: game_path,
+      teams: team_path,
+      game_teams: game_teams_path
+    }
+
+    stat_tracker = StatTracker.from_csv(locations)
+
+    assert_equal 510, stat_tracker.all_games_by_team("6").count
+  end
+
 
   def test_it_gets_winningest_coach
     skip

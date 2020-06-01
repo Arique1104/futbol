@@ -54,12 +54,13 @@ module TeamStatistics
     team_name(opponent)
   end
 
-  def win_percentage(team_games) #calculate win percentage
+  def win_percentage(team_games_by_id) #calculate win percentage
     wins = 0.0
-    team_games.each do |game|
+    team_games_by_id.each do |game|
       wins += 1.0 if game.result == "WIN"
     end
-    (wins / team_games.length)
+    (wins / team_games_by_id.length)
+    require "pry"; binding.pry
   end
 
   def best_season(team_id) # compare team_id to home and away team id to find team seasons
