@@ -1,6 +1,5 @@
 module SeasonStatistics
 
-
   def winningest_coach(season)
     coach_results = results_by_head_coach(season)
     winningest_coach = coach_results.max_by do |coach, results|
@@ -32,47 +31,31 @@ module SeasonStatistics
     end
   end
 
-  # given a season find the Name of the Team with the
-  # best ratio of shots to goals for the entire season
   def most_accurate_team(season)
-    game_ids = game_ids_in_season(season)
-    x = @game_teams.reduce(Hash.new {|hash, key| hash[key] = [0,0]}) do |acc, game_team|
-      if game_ids.include?(game_team.game_id.to_i)
-        acc[game_team.team_id.to_i][0] += game_team.goals.to_f
-        acc[game_team.team_id.to_i][1] += game_team.shots.to_f
-      end
-      acc
-    end
-
-    y = x.max_by do |team_id, ratio|
+    team_ratios = goals_and_shots_by_team(season)
+    most_accurate_team_id = team_ratios.max_by do |team_id, ratio|
       ratio[0] / ratio[1]
     end.first
-
-    z = @teams.each do |team|
-      if team.team_id.to_i == y
-        return team.teamname
-      end
-    end
+    @teams.each { |team| return team.teamname if most_accurate_team_id == team.team_id.to_i }
   end
 
   def least_accurate_team(season)
+    team_ratios = goals_and_shots_by_team(season)
+    least_accurate_team_id = team_ratios.min_by do |team_id, ratio|
+      ratio[0] / ratio[1]
+    end.first
+    @teams.each { |team| return team.teamname if least_accurate_team_id == team.team_id.to_i }
+  end
+
+  def goals_and_shots_by_team(season)
     game_ids = game_ids_in_season(season)
-    x = @game_teams.reduce(Hash.new {|hash, key| hash[key] = [0,0]}) do |acc, game_team|
+    @game_teams.reduce(Hash.new {|hash, key| hash[key] = [0,0]}) do |acc, game_team|
       if game_ids.include?(game_team.game_id.to_i)
         acc[game_team.team_id.to_i][0] += game_team.goals.to_f
         acc[game_team.team_id.to_i][1] += game_team.shots.to_f
       end
       acc
     end
-
-    y = x.min_by do |team_id, ratio|
-      ratio[0] / ratio[1]
-    end.first
-
-    z = @teams.each do |team|
-      if team.team_id.to_i == y
-        return team.teamname
-      end
-    end
   end
+
 end
