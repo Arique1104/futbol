@@ -452,13 +452,13 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_winningest_coach
-    skip
+    # skip
     assert_equal "Claude Julien", @@stat_tracker.winningest_coach("20132014")
     assert_equal "Alain Vigneault", @@stat_tracker.winningest_coach("20142015")
   end
 
   def test_it_gets_worst_coach
-    skip
+    # skip
     assert_equal "Peter Laviolette", @@stat_tracker.worst_coach("20132014")
     expected = ["Craig MacTavish", "Ted Nolan"]
     assert_includes expected, @@stat_tracker.worst_coach("20142015")
