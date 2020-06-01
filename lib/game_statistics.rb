@@ -44,4 +44,12 @@ module GameStatistics
     (number_of_games / all_games).round(2)
   end
 
+  def count_of_games_by_season
+    games_by_season = @games.group_by { |game| game.season }
+    games_by_season.keys.each_with_object({}) do |season, count_of_games|
+      count_of_games[season] = games_by_season[season].count
+    end
+  end
+
+
 end
