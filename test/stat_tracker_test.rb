@@ -455,7 +455,7 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_worst_coach
-    skip
+    # skip
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'
