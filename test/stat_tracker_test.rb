@@ -369,7 +369,7 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_most_goals_scored
-    
+
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'
@@ -386,7 +386,7 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_fewest_goals_scored
-    skip
+
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'

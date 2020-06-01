@@ -76,4 +76,9 @@ module TeamStatistics
     end.goals
   end
 
+  def fewest_goals_scored(team_id)
+    all_games_by_team(team_id).min_by do |game|
+      game.goals
+    end.goals
+  end
 end
