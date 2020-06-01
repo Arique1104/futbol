@@ -51,5 +51,8 @@ module GameStatistics
     end
   end
 
+  def average_goals_per_game
+    (all_total_scores.sum / all_total_scores.count.to_f).round(2)
+  end
 
 end

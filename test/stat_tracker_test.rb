@@ -61,20 +61,7 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_average_goals_per_game
-    skip
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
-
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
-
-    assert_equal 4.22, stat_tracker.average_goals_per_game
+    assert_equal 4.22, @@stat_tracker.average_goals_per_game
   end
 
   def test_it_gets_average_goals_by_season
