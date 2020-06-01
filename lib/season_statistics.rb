@@ -79,6 +79,4 @@ module SeasonStatistics
     end.first
     @teams.each { |team| return team.teamname if least_tackles_team_id == team.team_id }
   end
-
-
 end
