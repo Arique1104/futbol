@@ -1,18 +1,25 @@
-require_relative "./stat_tracker"
-require "csv"
+module LeagueStatistics
 
-class LeagueStatistics
-  
   def count_of_teams
-    total_games = CSV.read(@teams, :headers=>true)
-    total_games.count
+    @teams.count
   end
 
   def team_name(id)
-    rows = CSV.read(@teams, :headers => true, :header_converters => :symbol)
-    rows.find do |row|
-      return row[:teamname] if row[:team_id] == id.to_s
+    @teams.find do |team|
+      return team.teamname if team.team_id == id
     end
+  end
+
+  def scores(side)
+    scores = Hash.new { |scores, team_id| scores[team_id] = [] }
+    @game_teams.each do |game_team|
+      if side == "home_and_away"
+        scores[game_team.team_id] << game_team.goals
+      elsif side == game_team.hoa
+        scores[game_team.team_id] << game_team.goals
+      end
+    end
+    scores
   end
 
   def team_scores
@@ -27,16 +34,12 @@ class LeagueStatistics
     scores("home")
   end
 
-  def scores(side)
-    scores = Hash.new { |hash, key| hash[key] = [] }
-    CSV.foreach(@game_teams, :headers => true, :header_converters => :symbol) do |row|
-      if side == "home_and_away"
-        scores[row[:team_id]] << row[:goals].to_i
-      elsif row[:hoa] == side
-        scores[row[:team_id]] << row[:goals].to_i
-      end
+  def average_scores(side_scores_hash)
+    average_scores = Hash.new
+    side_scores_hash.each do |team, scores|
+      average_scores[team] = (scores.sum.to_f / scores.count).round(2)
     end
-    scores
+    average_scores
   end
 
   def average_team_scores
@@ -51,16 +54,15 @@ class LeagueStatistics
     average_scores(home_team_scores)
   end
 
-  def average_scores(side_scores_hash)
-    average_scores = Hash.new
-    side_scores_hash.each do |team, scores|
-      average_scores[team] = (scores.sum.to_f / scores.count).round(2)
-    end
-    average_scores
-  end
-
   def best_offense
     highest_score(average_team_scores)
+  end
+
+  def highest_score(average_side_scores)
+    highest_score = average_side_scores.max_by do |team, av_score|
+      av_score
+    end[0]
+    team_name(highest_score)
   end
 
   def highest_scoring_visitor
@@ -71,15 +73,14 @@ class LeagueStatistics
     highest_score(average_home_team_scores)
   end
 
-  def highest_score(average_side_scores)
-    highest_score = average_side_scores.max_by do |team, av_score|
+  def lowest_score(average_side_scores)
+    lowest_score = average_side_scores.min_by do |team, av_score|
       av_score
     end[0]
-    team_name(highest_score)
+    team_name(lowest_score)
   end
 
   def worst_offense
-
     lowest_score(average_team_scores)
   end
 
@@ -89,12 +90,5 @@ class LeagueStatistics
 
   def lowest_scoring_home_team
     lowest_score(average_home_team_scores)
-  end
-
-  def lowest_score(average_side_scores)
-    lowest_score = average_side_scores.min_by do |team, av_score|
-      av_score
-    end[0]
-    team_name(lowest_score)
   end
 end
