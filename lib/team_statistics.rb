@@ -69,4 +69,11 @@ module TeamStatistics
     all_games = all_games_by_team(team_id)
     win_percentage(all_games).round(2)
   end
+
+  def most_goals_scored(team_id)
+    all_games_by_team(team_id).max_by do |game|
+      game.goals
+    end.goals
+  end
+
 end
