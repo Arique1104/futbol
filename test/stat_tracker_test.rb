@@ -4,20 +4,21 @@ require "minitest/pride"
 
 class StatTrackerTest < MiniTest::Test
 
-  @game_path = './data/games.csv'
-  @team_path = './data/teams.csv'
-  @game_teams_path = './data/game_teams.csv'
+  game_path = './data/games.csv'
+  team_path = './data/teams.csv'
+  game_teams_path = './data/game_teams.csv'
 
-  @locations = {
-    games: @game_path,
-    teams: @team_path,
-    game_teams: @game_teams_path
+  locations = {
+    games: game_path,
+    teams: team_path,
+    game_teams: game_teams_path
   }
 
-  @@stat_tracker ||= StatTracker.from_csv(@locations)
+  @@stat_tracker ||= StatTracker.from_csv(locations)
 
   def test_it_exists
     assert_instance_of StatTracker, @@stat_tracker
+    require "pry"; binding.pry
   end
 
   def test_it_can_get_percentage_out_of_total_games
