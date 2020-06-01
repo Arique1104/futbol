@@ -403,7 +403,7 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_favorite_opponent
-    skip
+    
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'
@@ -420,7 +420,7 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_rival
-    skip
+
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'
