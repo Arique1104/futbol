@@ -51,34 +51,38 @@ module TeamStatistics
     (wins / team_games_by_id.length)
   end
 
-  def best_season(team_id)
-    find_team_games_by_id = @games.find_all do |game|
+  def find_team_games_by_id(team_id) #Write a test
+    @games.find_all do |game|
       game.home_team_id  == team_id || game.away_team_id == team_id
     end
-    games_in_season = find_team_games_by_id.group_by(&:season)
-    games_in_season.each do |season, season_games|
+  end
+
+  def games_in_season(team_id) # hash of season keys and game object values
+    find_team_games_by_id(team_id).group_by(&:season)
+  end
+
+  def best_season(team_id)
+    percentage_by_season = Hash.new
+    games_in_season(team_id).each do |season, season_games|
       season_game_ids = season_games.map(&:game_id)
       team_games_in_season_by_id = @game_teams.find_all do |game|
         game.team_id == team_id && season_game_ids.include?(game.game_id)
       end
-      games_in_season[season] = win_percentage(team_games_in_season_by_id)
+      percentage_by_season[season] = win_percentage(team_games_in_season_by_id)
     end
-    games_in_season.max_by { |_, win_percentage| win_percentage }.first
+    percentage_by_season.max_by { |_, win_percentage| win_percentage }.first
   end
 
   def worst_season(team_id)
-    find_team_games_by_id = @games.find_all do |game|
-      game.home_team_id  == team_id || game.away_team_id == team_id
-    end
-    games_in_season = find_team_games_by_id.group_by(&:season)
-    games_in_season.each do |season, season_games|
+    percentage_by_season = Hash.new
+    games_in_season(team_id).each do |season, season_games|
       season_game_ids = season_games.map(&:game_id)
       team_games_in_season_by_id = @game_teams.find_all do |game|
         game.team_id == team_id && season_game_ids.include?(game.game_id)
       end
-      games_in_season[season] = win_percentage(team_games_in_season_by_id)
+      percentage_by_season[season] = win_percentage(team_games_in_season_by_id)
     end
-    games_in_season.min_by { |_, win_percentage| win_percentage }.first
+    percentage_by_season.min_by { |_, win_percentage| win_percentage }.first
   end
 
   def all_games_by_team(team_id)
