@@ -9,9 +9,8 @@ module GameStatistics
   end
 
   def all_total_scores
-    @games.reduce([]) do |scores, game|
+    @games.each_with_object([]) do |game, scores|
       scores << game.away_goals + game.home_goals
-      scores
     end
   end
 

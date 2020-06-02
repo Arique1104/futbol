@@ -339,87 +339,37 @@ class StatTrackerTest < MiniTest::Test
 
   def test_it_gets_best_season
 
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
+    
 
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
-
-    assert_equal "20132014", stat_tracker.best_season("6")
+    assert_equal "20132014", @@stat_tracker.best_season("6")
   end
 
   def test_it_gets_worst_season
 
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
+    
 
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
-
-    assert_equal "20142015", stat_tracker.worst_season("6")
+    assert_equal "20142015", @@stat_tracker.worst_season("6")
   end
 
   def test_it_gets_average_win_percentage
 
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
+    
 
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
-
-    assert_equal 0.49, stat_tracker.average_win_percentage("6")
+    assert_equal 0.49, @@stat_tracker.average_win_percentage("6")
   end
 
   def test_it_gets_most_goals_scored
 
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
+    
 
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
-
-    assert_equal 7, stat_tracker.most_goals_scored("18")
+    assert_equal 7, @@stat_tracker.most_goals_scored("18")
   end
 
   def test_it_gets_fewest_goals_scored
 
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
+    
 
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
-
-    assert_equal 0, stat_tracker.fewest_goals_scored("18")
+    assert_equal 0, @@stat_tracker.fewest_goals_scored("18")
   end
 
     # Team Statistics method
@@ -484,39 +434,19 @@ class StatTrackerTest < MiniTest::Test
 # Team Statistics Helper Method # FINISH THIS!
   def test_it_can_find_win_percentage
     skip
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
-
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
+    
 
     team_games_by_id = stat_tracker.all_games_by_team("6")
 
-    assert_equal 0.54, stat_tracker.win_percentage(team_games_by_id)
+    assert_equal 0.54, @@stat_tracker.win_percentage(team_games_by_id)
   end
 
 # Team Statistics Helper Method # FINISH THIS!
   def test_it_can_find_all_games_played_by_a_team
 
-    game_path = './data/games.csv'
-    team_path = './data/teams.csv'
-    game_teams_path = './data/game_teams.csv'
+    
 
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-
-    stat_tracker = StatTracker.from_csv(locations)
-
-    assert_equal 510, stat_tracker.all_games_by_team("6").count
+    assert_equal 510, @@stat_tracker.all_games_by_team("6").count
   end
 
 

@@ -8,7 +8,7 @@ class GamesCollectionTest < MiniTest::Test
 
 	def setup
     games_csv_location = "./data/games.csv"
-    @games_collection = GamesCollection.new(games_csv_location)
+    @games_collection = GamesCollection.collect(games_csv_location)
 	end
 
 	def test_it_exists

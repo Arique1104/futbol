@@ -60,7 +60,6 @@ module TeamStatistics
       wins += 1.0 if game.result == "WIN"
     end
     (wins / team_games_by_id.length)
-    require "pry"; binding.pry
   end
 
   def best_season(team_id) # compare team_id to home and away team id to find team seasons

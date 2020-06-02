@@ -1,17 +1,11 @@
-require "csv"
-require_relative "./teams"
+require_relative './teams'
+require_relative './collection'
 
-class TeamsCollection
-  attr_reader :collection
+class TeamsCollection < Collection
 
-  def initialize(csv_location)
-    @collection = []
-    @csv_location = csv_location
+  def initialize
+    super
+    @statistics = Teams
   end
 
-  def load_csv
-    CSV.foreach(@csv_location, :headers => true, :header_converters => :symbol) do |row|
-    @collection << Teams.new(row)
-    end
-  end
 end
