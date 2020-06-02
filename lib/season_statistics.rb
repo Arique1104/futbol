@@ -59,24 +59,26 @@ module SeasonStatistics
   end
 
   def most_tackles(season)
+    season_tackles = tackles_by_team(season)
+    @teams.find do |team|
+      team.team_id.to_i == season_tackles.max_by {|_, tackles| tackles}.first
+    end.teamname
+  end
+
+  def tackles_by_team(season)
     game_ids = game_ids_in_season(season)
-    tackles_by_team = @game_teams.each_with_object(Hash.new {|h,k| h[k] = 0}) do |game_teams, memo|
-      memo[game_teams.team_id] += game_teams.tackles
+    x = @game_teams.each_with_object(Hash.new(0)) do |game_team, tackles_by_team|
+      if game_ids.include?(game_team.game_id.to_i)
+        tackles_by_team[game_team.team_id.to_i] += game_team.tackles
+      end
     end
-    most_tackles_team_id = tackles_by_team.max_by do |team_tackles|
-      team_tackles[1]
-    end.first
-    @teams.each { |team| return team.teamname if most_tackles_team_id == team.team_id }
   end
 
   def fewest_tackles(season)
-    game_ids = game_ids_in_season(season)
-    tackles_by_team = @game_teams.each_with_object(Hash.new {|h,k| h[k] = 0}) do |game_teams, memo|
-      memo[game_teams.team_id] += game_teams.tackles
-    end
-    least_tackles_team_id = tackles_by_team.min_by do |team_tackles|
-      team_tackles[1]
-    end.first
-    @teams.each { |team| return team.teamname if least_tackles_team_id == team.team_id }
+    season_tackles = tackles_by_team(season)
+    @teams.find do |team|
+      team.team_id.to_i == season_tackles.min_by {|_, tackles| tackles}.first
+    end.teamname
   end
+
 end
