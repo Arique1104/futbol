@@ -14,17 +14,17 @@ class StatTracker
   include SeasonStatistics
   include TeamStatistics
 
-  def initialize
-    @games ||= @@games.collection
-    @teams ||= @@teams.collection
-    @game_teams ||= @@game_teams.collection
+  def self.from_csv(locations)
+    @@games = GamesCollection.from_csv(locations[:games])
+    @@teams = TeamsCollection.from_csv(locations[:teams])
+    @@game_teams = GameTeamsCollection.from_csv(locations[:game_teams])
+    self.new
   end
 
-  def self.from_csv(locations)
-    @@games ||= GamesCollection.from_csv(locations[:games])
-    @@teams ||= TeamsCollection.from_csv(locations[:teams])
-    @@game_teams ||= GameTeamsCollection.from_csv(locations[:game_teams])
-    self.new
+  def initialize
+    @games = @@games.collection
+    @teams = @@teams.collection
+    @game_teams = @@game_teams.collection
   end
 
 end

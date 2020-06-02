@@ -1,8 +1,6 @@
-require_relative './collectable'
+require 'csv'
 
 class Collection
-
-  include Collectable
 
   attr_reader :collection
 
@@ -15,5 +13,16 @@ class Collection
     new_collection.from_csv(file)
     new_collection
   end
+
+  def from_csv(file)
+    CSV.foreach(file, :headers => true, :header_converters => :symbol) do |row|
+      load_csv(row)
+    end
+  end
+
+  def load_csv(database)
+    @collection << @statistics.new(database)
+  end
+
 
 end
