@@ -472,15 +472,19 @@ class StatTrackerTest < MiniTest::Test
   end
 
   def test_it_gets_most_tackles
-    skip
-    assert_equal "FC Cincinnati", @@stat_tracker.most_tackles("20132014") # PASS
-    # assert_equal "Seattle Sounders FC", @@stat_tracker.most_tackles("20142015") # FAIL
+    assert_equal "FC Cincinnati", @@stat_tracker.most_tackles("20132014")
+    assert_equal "Seattle Sounders FC", @@stat_tracker.most_tackles("20142015")
   end
 
   def test_it_gets_fewest_tackles
-    skip
-    # assert_equal "Atlanta United", @@stat_tracker.fewest_tackles("20132014") # FAIL
-    # assert_equal "Orlando City SC", @@stat_tracker.fewest_tackles("20142015") # FAIL
+    assert_equal "Atlanta United", @@stat_tracker.fewest_tackles("20132014") # FAIL
+    assert_equal "Orlando City SC", @@stat_tracker.fewest_tackles("20142015") # FAIL
+  end
+
+  # Team stats helper method
+  def test_it_gets_tackles_by_team
+    expected = {16=>1836, 19=>2087, 30=>1787, 21=>2223, 26=>3691, 24=>2515, 25=>1820, 23=>1710, 4=>2404, 17=>1783, 29=>2915, 15=>1904, 20=>1708, 18=>1611, 6=>2441, 8=>2211, 5=>2510, 2=>2092, 52=>2313, 14=>1774, 13=>1860, 28=>1931, 7=>1992, 10=>2592, 27=>2173, 1=>1568, 9=>2351, 22=>1751, 3=>2675, 12=>1807}
+    assert_equal expected, @@stat_tracker.tackles_by_team("20132014")
   end
 
   def test_it_gets_goals_and_shots_by_team
