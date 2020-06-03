@@ -1,123 +1,107 @@
 module TeamStatistics
 
   def team_info(team_id)
-    @teams.reduce({}) do |info, team|
-      if team_id == team.team_id
-        info["team_id"] = team.team_id
-        info["franchise_id"] = team.franchiseid
-        info["team_name"] = team.teamname
-        info["abbreviation"] = team.abbreviation
-        info["link"] = team.link
-      end
-      info
+    @teams.each_with_object({}) do |team, info|
+      next unless team_id == team.team_id
+
+      info['team_id'] = team.team_id
+      info['franchise_id'] = team.franchiseid
+      info['team_name'] = team.teamname
+      info['abbreviation'] = team.abbreviation
+      info['link'] = team.link
     end
   end
 
   def all_opponents_stats(team_id)
-    game_ids = all_games_by_team(team_id).map do |game|
-      game.game_id
+    # array of game ids belonging to team id
+    game_ids = all_games_by_team(team_id).map(&:game_id)
+    x = @game_teams.select do |game_team|
+      game_ids.include?(game_team.game_id) && game_team.team_id != team_id
     end
-    opponent_stats = []
-    @game_teams.each do |game_team|
-      opponent_stats << game_team if (game_ids.include?(game_team.game_id) && game_team.team_id != team_id)
-    end
-    opponent_stats
+
+    # x = x.map do |game_team|
+    #   require "pry"; binding.pry
+    # end
   end
 
   def win_percentage_against(team_id)
-    grouped_by_team = all_opponents_stats(team_id).group_by do |stat|
-      stat.team_id
-    end
+    grouped_by_team = all_opponents_stats(team_id).group_by(&:team_id)
+
     win_percent = {}
     grouped_by_team.each do |team_id, games|
-      loss = 0
       percent = 0
-      games.each do |game|
-        loss += 1 if game.result == "WIN"
-      end
-      win_percent[team_id] = percent += (loss.to_f/games.count).round(2)
+      loss = games.count { |game| game.result == 'WIN' }
+      win_percent[team_id] = percent += (loss.to_f / games.count).round(2)
     end
+
     win_percent
   end
 
   def favorite_opponent(team_id)
-    opponent = win_percentage_against(team_id).min_by do |team_id, percent|
+    x = win_percentage_against(team_id)
+    opponent = win_percentage_against(team_id).min_by do |_team_id, percent|
       percent
-    end[0]
+    end.first
     team_name(opponent)
   end
 
   def rival(team_id)
-    opponent = win_percentage_against(team_id).max_by do |team_id, percent|
-      percent
-    end[0]
+    opponent = win_percentage_against(team_id).max_by { |_team_id, percent| percent }.first
     team_name(opponent)
   end
 
-  def win_percentage(team_games_by_id) #calculate win percentage
-    wins = 0.0
-    team_games_by_id.each do |game|
-      wins += 1.0 if game.result == "WIN"
+  def win_percentage(team_games_by_id)
+    wins = team_games_by_id.count do |game|
+      game.result == 'WIN'
     end
-    (wins / team_games_by_id.length)
-    # require "pry"; binding.pry
+    (wins.to_f / team_games_by_id.length) .round(1)
   end
 
-  def best_season(team_id) # compare team_id to home and away team id to find team seasons
-    team_seasons = @games.find_all do |game|
+  def find_team_games_by_id(team_id) #Write a test
+    @games.find_all do |game|
       game.home_team_id  == team_id || game.away_team_id == team_id
     end
+  end
 
-    games_in_season = team_seasons.group_by do |game| # group games that match the team id into one season
-      game.season
-    end
+  def games_in_season(team_id) # hash of season keys and game object values
+    find_team_games_by_id(team_id).group_by(&:season)
+  end
 
-    games_in_season.each do |season, season_games| # for each season, find all the season game ids
-    season_game_ids = season_games.map do |game|
-      game.game_id
+  def best_season(team_id)
+    percentage_by_season = Hash.new
+    games_in_season(team_id).each do |season, season_games|
+
+      season_game_ids = season_games.map(&:game_id)
+
+      # maybe a helper method later
+      team_games_in_season_by_id = @game_teams.find_all do |game|
+        game.team_id == team_id && season_game_ids.include?(game.game_id)
       end
 
-      team_games = @game_teams.find_all do |game|
-        # find all the games where the team id (the team_id argument, the one we are searching out)
-        # is equal to the team id inside of each game in the season.
-        # TLDR: Checks to make sure the team id we gave matches the team ids in the given season
-        game.team_id == team_id && season_game_ids.include?(game.game_id) # boolean check
-      end
-      games_in_season[season] = win_percentage(team_games) # find the win percent of season
+      percentage_by_season[season] = win_percentage(team_games_in_season_by_id)
     end
-    games_in_season.max_by do |season, win_percentage| # find the season with the highest win percentage
-     win_percentage
-    end[0]
+
+    percentage_by_season.max_by do |_, win_percentage|
+       win_percentage
+    end.first
   end
 
   def worst_season(team_id)
-    team_seasons = @games.find_all do |game|
-      game.home_team_id  == team_id || game.away_team_id == team_id
-    end
+    percentage_by_season = Hash.new
+    games_in_season(team_id).each do |season, season_games|
+      season_game_ids = season_games.map(&:game_id)
+      # maybe a helper method later
 
-    games_in_season = team_seasons.group_by do |game|
-      game.season
-    end
-
-    games_in_season.each do |season, season_games|
-    season_game_ids = season_games.map do |game|
-      game.game_id
-      end
-
-      team_games = @game_teams.find_all do |game|
+      team_games_in_season_by_id = @game_teams.find_all do |game|
         game.team_id == team_id && season_game_ids.include?(game.game_id)
       end
-      games_in_season[season] = win_percentage(team_games)
+      percentage_by_season[season] = win_percentage(team_games_in_season_by_id)
     end
-    games_in_season.min_by do |season, win_percentage| #find the season with the worst win percentage
-     win_percentage
-    end[0]
+    percentage_by_season.min_by { |_, win_percentage| win_percentage }.first
   end
 
-  def all_games_by_team(team_id) # find all games that match team id
-    @game_teams.find_all do |all_games|
-      all_games.team_id == team_id
-    end
+  def all_games_by_team(team_id)
+    @game_teams.find_all { |game_team| game_team.team_id == team_id }
   end
 
   def average_win_percentage(team_id)
@@ -126,21 +110,16 @@ module TeamStatistics
   end
 
   def most_goals_scored(team_id)
-    all_games_by_team(team_id).max_by do |game|
-      game.goals
-    end.goals
+    all_games_by_team(team_id).max_by(&:goals).goals
   end
 
   def fewest_goals_scored(team_id)
-    all_games_by_team(team_id).min_by do |game|
-      game.goals
-    end.goals
+    all_games_by_team(team_id).min_by(&:goals).goals
   end
 
   def team_name(id)
     @teams.find do |team|
-      return team.teamname if team.team_id == id
-    end
+      team.team_id == id
+    end.teamname
   end
-
 end
