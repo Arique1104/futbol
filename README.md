@@ -20,7 +20,7 @@ Contributors are:
 ## Two Top Docs
 
 ### runner.rb
-Our first interaction pattern on pry
+- Our first interaction pattern on pry
 
 
 ### Stat_Tracker.rb
@@ -62,7 +62,6 @@ ______________________
 __for Collection Classes__
 - review code learnings from file.io
   - [Museo Repository](https://github.com/turingschool-examples/museo)
-
 
 - Opportunity for inheritance model
 ______________________
@@ -114,71 +113,72 @@ __for Individual Object Classes__
 - Combine it to one database instead of three.
 ______________________
 ## Modules
-We initially wanted four different work spaces that we could test against our StatTracker Test, and Modules made sense because we understood that at the heart of modules is the need to hold behavior.
+We initially wanted four different work spaces that we could test against our StatTracker Test, and Modules made sense because we understood that at the heart of modules is the need to hold behavior and our methods were in fact behavior.
 
-As we continued to progress in our methods testing and development, we were LEFT OFF HERE!
+As we continued to progress in our methods testing and development, we received feedback on the nuanced use of a module was to hold "shared" behavior not just behavior.  This meant we had to put a stronger eye towards universal refactoring.  Some initial thoughts of what more accurate modules would become are listed below in the Refactoring Wish-List.
 
 ### GameStatistics#methods:
 
-  - all_total_scores         
-  - get_percentage        
+  - all_total_scores
+  - get_percentage
   - percentage_ties
-  - average_goals_by_season   
-  - highest_total_score   
+  - average_goals_by_season
+  - highest_total_score
   - percentage_visitor_wins
-  - average_goals_per_game    
+  - average_goals_per_game
   - lowest_total_score
-  - count_of_games_by_season  
+  - count_of_games_by_season
   - percentage_home_wins
 
 ### LeagueStatistics#methods:
   - average_home_team_scores
-  - highest_score              
+  - highest_score
   - lowest_scoring_visitor
-  - average_scores            
-  - highest_scoring_home_team  
+  - average_scores
+  - highest_scoring_home_team
   - scores
-  - average_team_scores       
-  - highest_scoring_visitor    
+  - average_team_scores
+  - highest_scoring_visitor
   - team_scores
-  - average_visitor_scores   
-  - home_team_scores           
+  - average_visitor_scores
+  - home_team_scores
   - visitor_scores
-  - best_offense              
-  - lowest_score               
+  - best_offense
+  - lowest_score
   - worst_offense
-  - count_of_teams            
+  - count_of_teams
   - lowest_scoring_home_team
 
 ### SeasonStatistics#methods:
-  - fewest_tackles           
-  - least_accurate_team  
-  - results_by_head_coach  
+  - fewest_tackles
+  - least_accurate_team
+  - results_by_head_coach
   - worst_coach
-  - game_ids_in_season       
-  - most_accurate_team   
+  - game_ids_in_season
+  - most_accurate_team
   - tackles_by_team
-  - goals_and_shots_by_team  
-  - most_tackles         
+  - goals_and_shots_by_team
+  - most_tackles
   - winningest_coach
 
 ### TeamStatistics#methods:
-  - all_games_by_team       
-  - fewest_goals_scored    
+  - all_games_by_team
+  - fewest_goals_scored
   - team_info
   - all_opponents_stats
-  - find_team_games_by_id  
+  - find_team_games_by_id
   - team_name
   - average_win_percentage
-  - games_in_season   
+  - games_in_season
   - win_percentage
-  - best_season    
-  - most_goals_scored   -
+  - best_season
+  - most_goals_scored
   - win_percentage_against
-  - favorite_opponent      
-  - rival                
+  - favorite_opponent
+  - rival
   - worst_season
 
 ### Refactoring Wish-List
+__for Modules__
 - We would make our current Modules into classes and continue refactoring.
 - AKA: calculatable
