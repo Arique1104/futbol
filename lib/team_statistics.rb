@@ -54,7 +54,7 @@ module TeamStatistics
     wins = team_games_by_id.count do |game|
       game.result == 'WIN'
     end
-    (wins.to_f / team_games_by_id.length) .round(1)
+    (wins.to_f / team_games_by_id.length) .round(2)
   end
 
   def find_team_games_by_id(team_id) #Write a test
