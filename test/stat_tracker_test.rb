@@ -347,9 +347,9 @@ class StatTrackerTest < MiniTest::Test
     assert_equal "20142015", @@stat_tracker.worst_season("6")
   end
 
+  #helper method
   def test_it_gets_average_win_percentage
-
-    assert_equal 0.49, @@stat_tracker.average_win_percentage("6")
+    assert_equal 0.5, @@stat_tracker.average_win_percentage("6")
   end
 
   def test_it_gets_most_goals_scored
@@ -421,18 +421,13 @@ class StatTrackerTest < MiniTest::Test
     assert_includes expected, @@stat_tracker.rival("18")
   end
 
-# Team Statistics Helper Method # FINISH THIS!
+# # Team Statistics Helper Method # FINISH THIS!
   def test_it_can_find_win_percentage
-    skip
-
-    team_games_by_id = stat_tracker.all_games_by_team("6")
-
-    assert_equal 0.54, @@stat_tracker.win_percentage(team_games_by_id)
+    team_games_by_id = @@stat_tracker.all_games_by_team("6")
+    assert_equal 0.50, @@stat_tracker.win_percentage(team_games_by_id)
   end
-
-# Team Statistics Helper Method # FINISH THIS!
+#
   def test_it_can_find_all_games_played_by_a_team
-
     assert_equal 510, @@stat_tracker.all_games_by_team("6").count
   end
 
