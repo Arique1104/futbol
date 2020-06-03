@@ -105,6 +105,9 @@ class StatTrackerTest < MiniTest::Test
     assert_equal true, @@stat_tracker.team_scores.all? do |team_id, scores|
       team_id.is_a?(String) && scores.is_a?(Array)
     end
+    @@stat_tracker.stubs(:scores).returns({"3"=>[2,4]})
+    expected = {"3"=>[2,4]}
+    assert_equal expected, @@stat_tracker.visitor_scores
   end
 
   # League Statistics HELPER method
@@ -114,6 +117,9 @@ class StatTrackerTest < MiniTest::Test
     assert_equal true, @@stat_tracker.visitor_scores.all? do |team_id, scores|
       team_id.is_a?(String) && scores.is_a?(Array)
     end
+    @@stat_tracker.stubs(:scores).returns({"3"=>[2,2]})
+    expected = {"3"=>[2,2]}
+    assert_equal expected, @@stat_tracker.visitor_scores
   end
 
   # League Statistics HELPER method
@@ -123,6 +129,9 @@ class StatTrackerTest < MiniTest::Test
     assert_equal true, @@stat_tracker.home_team_scores.all? do |team_id, scores|
       team_id.is_a?(String) && scores.is_a?(Array)
     end
+    @@stat_tracker.stubs(:scores).returns({"3"=>[3,2]})
+    expected = {"3"=>[3,2]}
+    assert_equal expected, @@stat_tracker.visitor_scores
   end
 
     # League Statistics HELPER method
@@ -259,7 +268,7 @@ class StatTrackerTest < MiniTest::Test
 
   def test_it_gets_average_win_percentage
 
-    assert_equal 0.5, @@stat_tracker.average_win_percentage("6")
+    assert_equal 0.49, @@stat_tracker.average_win_percentage("6")
   end
 
   def test_it_gets_most_goals_scored
