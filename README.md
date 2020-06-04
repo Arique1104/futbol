@@ -9,23 +9,26 @@
 
 
 ### Stat_Tracker.rb
-  - StatTracker was initially responsible for holding the code around collecting the class.  We are now using a class method `.from_csv` and requesting the collection from the Collection Super Classes.
+  - StatTracker was initially responsible for holding the code that collects the csv information.  We are now using a class method `.from_csv` and requesting the collection from the Collection Super Class.
 
 ### StatTracker#methods:
-  - collect_game_teams  
-  - collect_games  
-  - collect_teams  
   - game_teams  
   - games  
   - teams
 
 ### Refactoring Wish-List
 __for for StatTracker__
-  - consolidate current stat_tracker methods into one method.
+  - consolidate current stat_tracker methods into one method. (Accomplished under the Collection Super Class Inheritance Model)
 
 ______________________
 
 ## Collection Classes
+### Collection Super Class
+  - collect_game_teams  
+  - collect_games  
+  - collect_teams
+  - These three methods are now one method
+
 ### games_collection.rb
 - Collects new game objects from games csv file
 
