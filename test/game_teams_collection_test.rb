@@ -18,7 +18,17 @@ class GameTeamsCollectionTest < Minitest::Test
 
   def test_it_can_load_a_csv_file
     @game_teams_collection.load_csv(@game_teams_csv_location)
+
     assert_equal 14882, @game_teams_collection.collection.count
+
+    all_game_teams = @game_teams_collection.collection.all? do |object|
+      object.is_a?(GameTeams)
+    end
+
+    assert_equal true, all_game_teams
+
+    game_teams_collection = GameTeamsCollection.from_csv(@game_teams_csv_location)
+    assert_equal 14882, game_teams_collection.count
   end
 
 end
