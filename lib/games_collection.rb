@@ -1,17 +1,12 @@
-require "csv"
+require_relative "./collection"
 require_relative "./games"
 
-class GamesCollection
-  attr_reader :collection
+class GamesCollection < Collection
+  attr_reader :statistics
 
-  def initialize(csv_location)
-    @collection = []
-    @csv_location = csv_location
+  def initialize
+    super
+    @statistics = Games
   end
 
-  def load_csv
-    CSV.foreach(@csv_location, :headers => true, :header_converters => :symbol) do |row|
-      @collection << Games.new(row)
-    end
-  end
 end
