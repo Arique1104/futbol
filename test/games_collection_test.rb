@@ -28,4 +28,22 @@ class GamesCollectionTest < MiniTest::Test
 		assert_equal true,  games_collection.all? { |object| object.is_a?(Games) }
 	end
 
+	def test_it_can_load_statistics
+		mock_games_params = {
+			:game_id => "2012030221",
+			:season => "20122013",
+			:away_team_id => "3",
+			:home_team_id => "6",
+			:away_goals => "2",
+			:home_goals => "3"
+		}
+
+		@games_collection.load_statistics(mock_games_params)
+
+		assert_equal 1, @games_collection.collection.count
+		require "pry"; binding.pry
+		assert_equal true,  @games_collection.collection.all? { |object| object.is_a?(Games) }
+	end
+
+
 end
