@@ -9,9 +9,7 @@
 
 
 ### Stat_Tracker.rb
-  - Take the CSV file and assign it to different objects to work on.
-  - we used the modules (although incorrectly) to make our stat_tracker smaller
-  - It makes the data more readable.
+  - StatTracker was initially responsible for holding the code around collecting the class.  We are now using a class method `.from_csv` and requesting the collection from the Collection Super Classes.
 
 ### StatTracker#methods:
   - collect_game_teams  
