@@ -8,7 +8,7 @@ require_relative "./season_statistics"
 require_relative "./team_statistics"
 
 class StatTracker
-  
+
   include GameStatistics
   include LeagueStatistics
   include SeasonStatistics
