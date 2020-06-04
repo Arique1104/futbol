@@ -17,11 +17,15 @@ class GamesCollectionTest < MiniTest::Test
 	end
 
   def test_it_can_load_csv
-    @games_collection.load_csv(@games_csv_location)
-    assert_equal 7441, @games_collection.collection.count
-    all_games_object = @games_collection.collection.all? do |object|
-      object.is_a?(Games)
-    end
-    assert_equal true, all_games_object
-  end
+		@games_collection.load_csv(@games_csv_location)
+
+		assert_equal 7441, @games_collection.collection.count
+		assert_equal true,  @games_collection.collection.all? { |object| object.is_a?(Games) }
+
+		games_collection = GamesCollection.from_csv(@games_csv_location)
+
+		assert_equal 7441, games_collection.count
+		assert_equal true,  games_collection.all? { |object| object.is_a?(Games) }
+	end
+
 end

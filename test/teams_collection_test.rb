@@ -17,11 +17,15 @@ class TeamsCollectionTest < MiniTest::Test
 	end
 
   def test_it_can_load_csv
+		
     @teams_collection.load_csv(@teams_csv_location)
+
     assert_equal 32, @teams_collection.collection.count
-    all_teams_object = @teams_collection.collection.all? do |object|
-      object.is_a?(Teams)
-    end
-    assert_equal true, all_teams_object
+    assert_equal true, @teams_collection.collection.all? { |object| object.is_a?(Teams) }
+
+    teams_collection = TeamsCollection.from_csv(@teams_csv_location)
+
+    assert_equal 32, teams_collection.count
+    assert_equal true, teams_collection.all? { |object| object.is_a?(Teams) }
   end
 end
