@@ -2,7 +2,6 @@ require "minitest/autorun"
 require "minitest/pride"
 require "./lib/teams_collection"
 require "./lib/teams"
-require "csv"
 
 class TeamsCollectionTest < MiniTest::Test
 
