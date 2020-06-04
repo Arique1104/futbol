@@ -17,7 +17,7 @@ class TeamsCollectionTest < MiniTest::Test
 	end
 
   def test_it_can_load_csv
-		
+
     @teams_collection.load_csv(@teams_csv_location)
 
     assert_equal 32, @teams_collection.collection.count
@@ -28,4 +28,21 @@ class TeamsCollectionTest < MiniTest::Test
     assert_equal 32, teams_collection.count
     assert_equal true, teams_collection.all? { |object| object.is_a?(Teams) }
   end
+
+	def test_it_can_load_statistics
+    mock_teams_params = {
+		      :team_id => "1",
+		      :franchiseid => "23",
+		      :teamname => "Atlanta United",
+		      :abbreviation => "ATL",
+		      :stadium => "Mercedes-Benz Stadium",
+		      :link => "/api/v1/teams/1"
+    }
+
+    @teams_collection.load_statistics(mock_teams_params)
+
+    assert_equal 1, @teams_collection.collection.count
+    assert_equal true,  @teams_collection.collection.all? { |object| object.is_a?(Teams) }
+  end
+
 end
