@@ -9,8 +9,6 @@ require_relative "./team_statistics"
 
 class StatTracker
   
-  attr_reader :games, :teams, :game_teams
-
   include GameStatistics
   include LeagueStatistics
   include SeasonStatistics
